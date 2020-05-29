@@ -172,8 +172,7 @@ while (CONVG<=0 && gl<=maxIteraciones)
     
   endfor
 
-  keyboard
-  
+   
   for u=1:size(KL,1)
 
     K=KL(u,1);
