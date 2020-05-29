@@ -54,6 +54,12 @@ xca=16.23;
 
 CAVIG=[.5*Ixx,0,E,0,5.07;Ixx,0,E,5.07,33.02-4.5;.5*Ixx,0,E,33.02-4.5,33.02]; ## Ix,Ax,E,Xi,Xf
 
+######## RESORTES #################################
+
+KL=[0,0]; # K,X
+
+KT=[0,0]; # K,X
+
 ######## CARGAS APLICADAS #########################
 
 [w0,Nl,Pm,Tal,Mt,Mct,Macn,Nt,xca,Lf]=equilibrioEstatico();
@@ -85,7 +91,7 @@ endfunction
 
 ##//////// CONFIGURACION //////////////////////////////
 
-gl=3 ;# Grados de libertad iniciales 
+gl=1 ;# Grados de libertad iniciales 
 
 gli=gl;
 
@@ -138,6 +144,8 @@ while (CONVG<=0 && gl<=maxIteraciones)
 
   Kv=zeros(gl,gl);
 
+  Kl=Kv;Kt=Kv;
+  
   fq=zeros(gl,1);
 
   fm=zeros(gl,1);
@@ -161,6 +169,32 @@ while (CONVG<=0 && gl<=maxIteraciones)
     KNX=D2NT*Eactual*Iactual*D2N;
 
     Kv=Kv+[integrador(KNX,XiActual,XfActual)];  
+    
+  endfor
+
+  keyboard
+  
+  for u=1:size(KL,1)
+
+    K=KL(u,1);
+    
+    X=KL(u,2);
+
+    Kl=function_handle(NT*K*N);
+
+    Kv=Kv+Kl(X);  
+    
+  endfor
+
+  for u=1:size(KT,1)
+
+    K=KT(u,1);
+    
+    X=KT(u,2);
+
+    Kt=function_handle(DNT*K*DN);
+
+    Kv=Kv+Kt(X);  
     
   endfor
   
