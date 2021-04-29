@@ -239,18 +239,22 @@ while (CONVG<=0 && gl<=maxIteraciones)
 ######### PLOTEO #########################################
   
   RRf=function_handle(N*C);
-  
-  AreaActual=trapz(abscisas,RRf(abscisas));
+
+  Norma=function_handle(abs(N*C));
+    
+  AreaActual=trapz(abscisas,Norma(abscisas));
 
   try
   
-    AreaPrevia=trapz(abscisas,rr);
+    AreaPrevia=trapz(abscisas,NormaPrevia);
 
   catch
 
     AreaPrevia=2*AreaActual;
 
   end_try_catch
+
+  NormaPrevia=Norma(abscisas);
   
   Error=abs((AreaPrevia-AreaActual)/AreaPrevia)*100;
   
